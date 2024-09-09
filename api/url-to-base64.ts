@@ -1,0 +1,15 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node'
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+    const { url } = req.query;
+
+    if (!url || typeof url !== "string") {
+        return res.status(400).send('Please provide an URL as a query parameter to convert base64 format.')
+    }
+
+    try {
+        return res.status(200).send(Buffer.from(await (await fetch(url)).arrayBuffer()).toString('base64'))
+    } catch (error) {
+        return res.status(500).send("Internal Server Error");
+    }
+}
