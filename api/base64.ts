@@ -11,8 +11,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const response = await fetch(url);
         const contentType = response.headers.get("content-type");
         
-        if (contentType !== 'image/jpeg') {
-            return res.status(400).send('Please provide a URL that points to a JPEG image.')
+        if (contentType !== 'image/jpeg' && contentType !== 'image/png') {
+            return res.status(400).send('Please provide a URL that points to a JPEG/PNG image.')
         }
         
         return res.status(200).send(Buffer.from(await (response).arrayBuffer()).toString('base64'))
